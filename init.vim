@@ -21,11 +21,25 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
-" 20行ずつ移動
-nnoremap <C-n> 20j
-vnoremap <C-n> 20j
-nnoremap <C-p> 20k
-vnoremap <C-p> 20k
+
+" NERDTree
+set nocompatible
+filetype off
+
+if has('vim_starting')
+    set runtimepath+=~/.vim/bundle/neobundle.vim
+    call neobundle#begin(expand('~/.vim/bundle/'))
+        NeoBundle 'scrooloose/nerdtree'
+    call neobundle#end()
+endif
+
+
+filetype plugin indent on
+
+" NERDTree起動設定
+nnoremap <C-W> <C-w>w
+nnoremap <C-n> :NERDTreeToggle<CR>
+
 " ノーマルモードへの移行と保存
 inoremap <silent> jj <ESC>:<C-u>w<CR>
 
@@ -56,6 +70,7 @@ endif
 " 設定開始
 if dein#load_state(s:dein_dir)
   call dein#begin(s:dein_dir)
+  autocmd vimenter * NERDTree
 
   " プラグインリストを収めた TOML ファイル
   " 予め TOML ファイルを用意しておく
@@ -71,9 +86,3 @@ if dein#load_state(s:dein_dir)
   call dein#end()
   call dein#save_state()
 endif
-
-" もし、未インストールものものがあったらインストール
-if dein#check_install()
-  call dein#install()
-endif
-
